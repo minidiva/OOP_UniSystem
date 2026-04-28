@@ -1,0 +1,18 @@
+package domain.course;
+
+import domain.user.Student;
+
+public class Course {
+
+	private int id;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public boolean isAvailableFor(Student student) {
+	    // TODO: Implement actual availability logic
+	    return true; // or false based on business logic
+	}
+
+}

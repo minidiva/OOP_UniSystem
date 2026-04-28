@@ -1,0 +1,12 @@
+package domain.course;
+
+import domain.user.Student;
+
+public class Course {
+
+	public Object isAvailableFor(Student student) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

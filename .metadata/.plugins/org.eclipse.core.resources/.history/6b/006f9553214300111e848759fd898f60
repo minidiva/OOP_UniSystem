@@ -1,0 +1,22 @@
+package service;
+import java.util.*;
+
+public class CourseService {
+
+	private final CourseRepository courseRepository;
+	
+	public CourseService(CourseRepository courseRepository) {
+	    this.courseRepository = courseRepository;
+	}
+	
+	public List<Course> getAvailableFor(Student student) {
+	    return courseRepository.findAll().stream()
+	        .filter(c -> c.isAvailableFor(student))
+	         .collect(Collectors.toList());
+	}
+	
+	public Course getById(String id) {
+	    return courseRepository.findById(id)
+	        .orElseThrow(() -> new CourseNotFoundException("Курс не найден: " + id));
+	}
+}

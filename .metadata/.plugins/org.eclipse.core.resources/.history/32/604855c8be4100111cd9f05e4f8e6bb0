@@ -1,0 +1,18 @@
+package domain;
+
+public class Session {
+	private User currentUser;
+
+	public User getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(User currentUser) {
+		this.currentUser = currentUser;
+	}
+	
+	public void login(User user) {
+		return this.currentUser;
+	}
+	
+}

@@ -1,0 +1,6 @@
+package domain;
+import domain.User;
+
+public class Session {
+	private User currentUser;
+}

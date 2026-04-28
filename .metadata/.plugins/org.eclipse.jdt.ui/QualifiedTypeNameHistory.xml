@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="command.core.CommandRegistry"/>
+    <fullyQualifiedTypeName name="config.CommandConfigurator"/>
+    <fullyQualifiedTypeName name="ui.Menu"/>
+    <fullyQualifiedTypeName name="service.CourseService"/>
+    <fullyQualifiedTypeName name="command.core.Command"/>
+    <fullyQualifiedTypeName name="repository.CourseRepository"/>
+    <fullyQualifiedTypeName name="util.Printer"/>
+</qualifiedTypeNameHistroy>

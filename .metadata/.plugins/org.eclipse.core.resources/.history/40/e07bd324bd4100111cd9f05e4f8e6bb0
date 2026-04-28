@@ -1,0 +1,6 @@
+package domain;
+package domain.user;
+
+public class Session {
+	private User currentUser;
+}

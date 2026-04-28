@@ -1,0 +1,7 @@
+package domain;
+
+public class User {
+	protected int id;
+	protected String firstName;
+	
+}

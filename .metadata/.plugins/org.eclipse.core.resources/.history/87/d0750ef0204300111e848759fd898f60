@@ -1,0 +1,49 @@
+package repository;
+
+//Database.java — хранит ВСЕ данные приложения
+public class Database implements Serializable {
+
+ private static Database instance;
+ private static final String FILE_PATH = "database.ser";
+
+ // все коллекции здесь
+ private Map<String, User>   users   = new HashMap<>();
+ private Map<String, Course> courses = new HashMap<>();
+ private List<Enrollment>    enrollments = new ArrayList<>();
+
+ private Database() {} // приватный конструктор — Singleton
+
+ public static Database getInstance() {
+     if (instance == null) {
+         instance = new Database();
+     }
+     return instance;
+ }
+
+ // геттеры для репозиториев
+ public Map<String, Course> getCourses()     { return courses; }
+ public Map<String, User>   getUsers()       { return users; }
+ public List<Enrollment>    getEnrollments() { return enrollments; }
+
+ // сохранить всё в файл
+ public void save() {
+     try (ObjectOutputStream oos = new ObjectOutputStream(
+             new FileOutputStream(FILE_PATH))) {
+         oos.writeObject(this);
+     } catch (IOException e) {
+         System.out.println("Ошибка сохранения: " + e.getMessage());
+     }
+ }
+
+ // загрузить из файла
+ public void load() {
+     try (ObjectInputStream ois = new ObjectInputStream(
+             new FileInputStream(FILE_PATH))) {
+         instance = (Database) ois.readObject();
+     } catch (IOException e) {
+         System.out.println("Файл не найден, старт с пустой базой.");
+     } catch (ClassNotFoundException e) {
+         System.out.println("Ошибка загрузки данных.");
+     }
+ }
+}

@@ -1,0 +1,18 @@
+package domain.course;
+
+import domain.user.Student;
+
+public class Course {
+
+	private int id;
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public Object isAvailableFor(Student student) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

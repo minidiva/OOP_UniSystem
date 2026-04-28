@@ -1,0 +1,6 @@
+package domain;
+import User User.java;
+
+public class Session {
+	private User currentUser;
+}

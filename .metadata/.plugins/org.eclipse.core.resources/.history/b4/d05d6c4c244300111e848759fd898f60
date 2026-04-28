@@ -1,0 +1,46 @@
+package app;
+import java.util.*;
+import util.Printer;
+import command.core.*;
+import domain.user.Student;
+import domain.user.User;
+import config.CommandConfigurator;
+import service.CourseService;
+import repository.CourseRepository;
+import ui.Menu;
+
+public class App {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Printer printer = new Printer();
+        
+        CommandRegistry registry = new CommandRegistry();
+        CommandManager manager = new CommandManager();
+        
+        User user = new Student();
+        
+        // Fix: Create repository instance
+        CourseRepository courseRepository = new CourseRepository();
+        
+        CommandConfigurator.configure(
+            user, registry, manager,
+            new CourseService(courseRepository),
+            printer
+        );
+        
+        Menu menu = new Menu(registry, printer);
+        
+        while (true) {
+            menu.show();
+            String input = scanner.nextLine();
+            Command cmd = registry.get(input);
+            
+            if (cmd == null) {
+                printer.println("Unknown command. Available commands:");
+                continue;
+            }
+            
+            manager.execute(cmd, scanner);
+        }
+    }
+}

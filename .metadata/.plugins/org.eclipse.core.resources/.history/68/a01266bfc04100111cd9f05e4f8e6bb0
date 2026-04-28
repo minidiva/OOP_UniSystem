@@ -1,0 +1,28 @@
+package config;
+
+public class CommandConfigurator {
+
+    public static void configure(
+            User user,
+            CommandRegistry registry,
+            CommandManager manager,
+            CourseService cs,
+            EnrollmentService es,
+            ResearchService rs,
+            Printer printer
+    ) {
+
+        // общие команды
+        registry.register(new UndoCommand(manager, printer));
+        registry.register(new RedoCommand(manager, printer));
+
+        if (user instanceof Student student) {
+            registry.register(new ViewCoursesCommand(cs, student, printer));
+            registry.register(new EnrollCommand(es, student, printer));
+        }
+
+        if (user instanceof Researcher researcher) {
+            registry.register(new AddPaperCommand(rs, researcher, printer));
+        }
+    }
+}

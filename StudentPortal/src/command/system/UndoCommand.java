@@ -1,0 +1,27 @@
+package command.system;
+import command.core.Command;
+
+import java.util.Scanner;
+import util.Printer;
+import command.core.*;
+
+public class UndoCommand implements Command {
+
+    private final CommandManager manager;
+    private final Printer printer;
+
+    public UndoCommand(CommandManager manager, Printer printer) {
+        this.manager = manager;
+        this.printer = printer;
+    }
+
+    public String name() { return "undo"; }
+    public String description() { return "Отменить команду"; }
+
+    @Override
+    public void execute(Scanner scanner) {
+        manager.undo();
+        printer.println("Undo выполнен");
+    }
+
+}

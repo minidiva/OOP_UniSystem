@@ -1,0 +1,44 @@
+package app;
+import java.util.*;
+import util.Printer;
+import command.core.CommandRegistry;
+
+
+public class App {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        Printer printer = new Printer();
+
+        CommandRegistry registry = new CommandRegistry();
+        CommandManager manager = new CommandManager();
+
+        User user = ... // login
+
+        CommandConfigurator.configure(
+            user, registry, manager,
+            new CourseService(),
+            new EnrollmentService(),
+            new ResearchService(),
+            printer
+        );
+
+        Menu menu = new Menu(registry, printer);
+
+        while (true) {
+            menu.show();
+
+            String input = scanner.nextLine();
+
+            Command cmd = registry.get(input);
+
+            if (cmd == null) {
+                printer.println("");
+                continue;
+            }
+
+            manager.execute(cmd, scanner);
+        }
+    }
+}
