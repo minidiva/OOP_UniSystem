@@ -30,5 +30,6 @@ public class CommandConfigurator {
         if (user instanceof Student student) {
             registry.register(new ViewCoursesCommand(cs, student, printer));
         }
+
     }
 }
