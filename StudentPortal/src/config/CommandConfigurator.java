@@ -1,15 +1,17 @@
 package config;
+
 import util.Printer;
 import command.core.CommandRegistry;
 import command.student.ViewCoursesCommand;
+import command.student.RegisterCourseCommand;
 import command.core.CommandManager;
 import domain.user.User;
-import config.CommandConfigurator;
 import service.CourseService;
 import command.system.*;
 import domain.user.*;
 import ui.Menu;
-
+import repository.Database;
+import command.teacher.PutMarkCommand;
 
 public class CommandConfigurator {
 
@@ -21,14 +23,21 @@ public class CommandConfigurator {
             CourseService cs,
             Printer printer
     ) {
-
+        Database db = Database.getInstance();
+        
         // общие команды
         registry.register(new UndoCommand(manager, printer));
         registry.register(new RedoCommand(manager, printer));
         registry.register(new ShowMenuCommand(menu));
+        registry.register(new LoginCommand(db, printer));
 
         if (user instanceof Student student) {
             registry.register(new ViewCoursesCommand(cs, student, printer));
+            registry.register(new RegisterCourseCommand(student, cs, printer));
+        }
+        
+        if (user instanceof Teacher teacher) {
+            registry.register(new PutMarkCommand(teacher, cs, db, printer));
         }
     }
 }
