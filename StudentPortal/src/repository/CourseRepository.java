@@ -2,7 +2,6 @@ package repository;
 import java.util.*;
 import domain.course.*;
 
-//CourseRepository.java — тонкая прослойка между сервисом и Database
 public class CourseRepository {
 
 	 private final Map<String, Course> courses = 

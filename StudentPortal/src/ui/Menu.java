@@ -13,7 +13,7 @@ public class Menu {
     }
 
     public void show() {
-        printer.println("\n=== Доступные команды ===");
+        printer.println("\n=== доступные команды ===");
         registry.all().forEach(cmd ->
             printer.println(cmd.name() + " - " + cmd.description())
         );

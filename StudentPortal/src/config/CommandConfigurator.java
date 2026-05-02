@@ -39,5 +39,6 @@ public class CommandConfigurator {
         if (user instanceof Teacher teacher) {
             registry.register(new PutMarkCommand(teacher, cs, db, printer));
         }
+
     }
 }

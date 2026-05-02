@@ -3,6 +3,7 @@ package app;
 import java.util.*;
 import util.Printer;
 import command.core.*;
+import domain.course.Course;
 import domain.user.Student;
 import domain.user.User;
 import repository.CourseRepository;
@@ -21,6 +22,7 @@ public class App {
         CommandManager manager = new CommandManager();
         CourseRepository courseRepository = new CourseRepository();
 
+
         // Инициализация базы данных
         Database db = Database.getInstance();
         db.load();              
@@ -31,6 +33,9 @@ public class App {
             printer.println("   - " + u.getEmail() + " (password: " + u.getPassword() + ")")
         );
         printer.println(" Courses: " + db.getCourses().size() + "\n");
+
+        courseRepository.save(new Course(1, "Introduction to Networks", "Introductory course for freshmen", 6));
+
 
         User user = new Student();
         Menu menu = new Menu(registry, printer);
