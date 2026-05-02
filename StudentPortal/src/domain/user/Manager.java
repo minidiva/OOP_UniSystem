@@ -1,24 +1,20 @@
 package domain.user;
 
-public class Manager extends User {
-    private String managerType; // OR_MANAGER, DEPARTMENT_MANAGER, DEAN
-    private double salary;
+import java.time.LocalDate;
+
+public class Manager extends Employee {
+    private String managerType;  // OR_MANAGER, DEPARTMENT_MANAGER, DEAN
     
     public Manager() {
         this.role = Role.MANAGER;
     }
     
-    public Manager(int id, String firstName, String lastName, String email, String password, String managerType, double salary) {
-        super(id, firstName, lastName, email, password, Role.MANAGER);
+    public Manager(int id, String firstName, String lastName, String email, String password, 
+                   String managerType, double salary) {
+        super(id, firstName, lastName, email, password, Role.MANAGER, salary, LocalDate.now());
         this.managerType = managerType;
-        this.salary = salary;
     }
     
-    public void approveRegistration(Student student, String courseName) {
-        System.out.println(" Manager approved registration for " + student.getFullName() + " to " + courseName);
-    }
-    
-    // Геттеры/сеттеры
     public String getManagerType() { return managerType; }
-    public double getSalary() { return salary; }
+    public void setManagerType(String managerType) { this.managerType = managerType; }
 }
