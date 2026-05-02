@@ -22,7 +22,7 @@ public class Mark implements Serializable {
     
     public String getLetterGrade() {
         double total = calculateTotal();
-        if (total >= 94.5) return "A";
+        if (total >= 94.5 && total <= 100) return "A";
         if(total >=89.5 && total < 94.5) return "A-";
         if (total >= 84.5 && total < 89.5) return "B+";
         if(total >= 79.5 && total < 84.5) return "B";
@@ -37,7 +37,7 @@ public class Mark implements Serializable {
     
     public double getGpaValue() {
         double total = calculateTotal();
-         if (total >= 94.5) return 4.00;
+         if (total >= 94.5 && total <= 100) return 4.00;
         if(total >=89.5 && total < 94.5) return 3.67;
         if (total >= 84.5 && total < 89.5) return 3.33;
         if(total >= 79.5 && total < 84.5) return 3.00;
