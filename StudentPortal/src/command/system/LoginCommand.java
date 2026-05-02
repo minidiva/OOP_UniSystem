@@ -3,17 +3,20 @@ package command.system;
 import java.util.Scanner;
 import command.core.Command;
 import repository.Database;
+import domain.user.Session;
 import domain.user.User;
 import util.Printer;
 
 public class LoginCommand implements Command {
     private final Database db;
     private final Printer printer;
+    private final Session session;
     private User currentUser;
     
-    public LoginCommand(Database db, Printer printer) {
+    public LoginCommand(Database db, Printer printer, Session session) {
         this.db = db;
         this.printer = printer;
+        this.session = session;
     }
     
     public String name() { return "login"; }
@@ -32,6 +35,7 @@ public class LoginCommand implements Command {
             .orElse(null);
         
         if (currentUser != null) {
+            session.setCurrentUser(currentUser);
             printer.println("Welcome, " + currentUser.getFullName() + "! Role: " + currentUser.getRole());
         } else {
             printer.println("Invalid email or password");

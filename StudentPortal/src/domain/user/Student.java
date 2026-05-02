@@ -1,13 +1,12 @@
 package domain.user;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import domain.course.Course;
 
-public class Student extends User implements Serializable {
+public class Student extends User {
     private int year;
     private String major;
     private int credits;

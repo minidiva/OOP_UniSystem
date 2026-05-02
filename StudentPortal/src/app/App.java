@@ -3,9 +3,9 @@ package app;
 import java.util.*;
 import util.Printer;
 import command.core.*;
+import command.system.LoginCommand;
 import domain.course.Course;
-import domain.user.Student;
-import domain.user.User;
+import domain.user.Session;
 import repository.CourseRepository;
 import config.CommandConfigurator;
 import service.CourseService;
@@ -36,15 +36,17 @@ public class App {
 
         courseRepository.save(new Course(1, "Introduction to Networks", "Introductory course for freshmen", 6));
 
-
-        User user = new Student();
+        Session session = new Session();
         Menu menu = new Menu(registry, printer);
+        CourseService courseService = new CourseService(courseRepository);
+        LoginCommand loginCommand = new LoginCommand(db, printer, session);
 
         CommandConfigurator.configure(
-            user, registry, manager,
+            session, registry, manager,
             menu,
-            new CourseService(courseRepository),
-            printer
+            courseService,
+            printer,
+            loginCommand
         );
 
         menu.show();
@@ -60,6 +62,18 @@ public class App {
             }
 
             manager.execute(cmd, scanner);
+
+            if (cmd == loginCommand && session.isAuthenticated()) {
+                registry.clear();
+                CommandConfigurator.configure(
+                    session, registry, manager,
+                    menu,
+                    courseService,
+                    printer,
+                    loginCommand
+                );
+                menu.show();
+            }
         }
     }
 }

@@ -16,4 +16,8 @@ public class CommandRegistry {
     public Collection<Command> all() {
         return commands.values();
     }
+
+    public void clear() {
+        commands.clear();
+    }
 }
