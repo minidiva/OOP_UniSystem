@@ -1,4 +1,5 @@
 package app;
+
 import java.util.*;
 import util.Printer;
 import command.core.*;
@@ -8,18 +9,28 @@ import repository.CourseRepository;
 import config.CommandConfigurator;
 import service.CourseService;
 import ui.Menu;
-
+import repository.Database;
 
 public class App {
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         Printer printer = new Printer();
 
         CommandRegistry registry = new CommandRegistry();
         CommandManager manager = new CommandManager();
         CourseRepository courseRepository = new CourseRepository();
+
+        // Инициализация базы данных
+        Database db = Database.getInstance();
+        db.load();              
+        db.initTestData();      
+        
+        printer.println("\n Database has " + db.getUsers().size() + " users:");
+        db.getUsers().values().forEach(u -> 
+            printer.println("   - " + u.getEmail() + " (password: " + u.getPassword() + ")")
+        );
+        printer.println(" Courses: " + db.getCourses().size() + "\n");
 
         User user = new Student();
         Menu menu = new Menu(registry, printer);
@@ -31,16 +42,15 @@ public class App {
             printer
         );
 
-
         menu.show();
         while (true) {
-
-            String input = scanner.nextLine();
+            System.out.print("\n> ");
+            String input = scanner.nextLine().trim().toLowerCase();
 
             Command cmd = registry.get(input);
 
             if (cmd == null) {
-                printer.println("");
+                printer.println(" Unknown command. Type 'help' for available commands.");
                 continue;
             }
 
