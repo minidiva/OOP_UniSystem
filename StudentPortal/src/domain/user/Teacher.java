@@ -1,12 +1,12 @@
 package domain.user;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import domain.course.Course;
 
-public class Teacher extends User {
-    private String title;  // tutor, lecturer, senior_lecturer, professor
-    private double salary;
+public class Teacher extends Employee {
+    private String title;  // PROFESSOR, SENIOR_LECTURER, LECTURER, TUTOR
     private List<Course> teachingCourses;
     
     public Teacher() {
@@ -14,21 +14,16 @@ public class Teacher extends User {
         this.teachingCourses = new ArrayList<>();
     }
     
-    public Teacher(int id, String firstName, String lastName, String email, String password, String title, double salary) {
-        super(id, firstName, lastName, email, password, Role.TEACHER);
+    public Teacher(int id, String firstName, String lastName, String email, String password, 
+                   String title, double salary) {
+        super(id, firstName, lastName, email, password, Role.TEACHER, salary, LocalDate.now());
         this.title = title;
-        this.salary = salary;
         this.teachingCourses = new ArrayList<>();
     }
     
-    public void putMark(Student student, Course course, double firstMark, double secondMark, double finalMark) {
-        System.out.println("Mark put for " + student.getFullName() + " in " + course.getTitle());
-    }
-    
-    // Геттеры/сеттеры
+    // геттеры и сеттеры...
     public String getTitle() { return title; }
-    public double getSalary() { return salary; }
-    public List<Course> getTeachingCourses() { return teachingCourses; }
     public void setTitle(String title) { this.title = title; }
+    public List<Course> getTeachingCourses() { return teachingCourses; }
     public void addCourse(Course course) { teachingCourses.add(course); }
 }
