@@ -2,19 +2,19 @@ package command.system;
 
 import java.util.Scanner;
 import command.core.Command;
-import repository.Database;
 import domain.user.Session;
 import domain.user.User;
+import service.UserService;
 import util.Printer;
 
 public class LoginCommand implements Command {
-    private final Database db;
+    private final UserService userService;
     private final Printer printer;
     private final Session session;
     private User currentUser;
     
-    public LoginCommand(Database db, Printer printer, Session session) {
-        this.db = db;
+    public LoginCommand(UserService userService, Printer printer, Session session) {
+        this.userService = userService;
         this.printer = printer;
         this.session = session;
     }
@@ -47,7 +47,7 @@ public class LoginCommand implements Command {
         }
         String password = scanner.nextLine();
         
-        currentUser = findUserByEmailAndPassword(email, password);
+        currentUser = userService.authenticate(email, password).orElse(null);
         
         if (currentUser != null) {
             session.setCurrentUser(currentUser);
@@ -58,13 +58,6 @@ public class LoginCommand implements Command {
         }
     }
     
-    private User findUserByEmailAndPassword(String email, String password) {
-        return db.getUsers().values().stream()
-            .filter(user -> user.getEmail().equals(email))
-            .filter(user -> user.getPassword().equals(password))
-            .findFirst()
-            .orElse(null);
-    }
     
     public User getCurrentUser() { 
         return currentUser; 

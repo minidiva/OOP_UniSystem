@@ -1,25 +1,23 @@
 package repository;
+
 import java.util.*;
-import domain.course.*;
+import domain.course.Course;
 
 public class CourseRepository {
 
-	 private final Map<String, Course> courses = 
-	     Database.getInstance().getCourses(); // ссылка на коллекцию в Database
-	
-	 public void save(Course course) {
-	     courses.put(String.valueOf(course.getId()), course);
-	 }
-	
-	 public Optional<Course> findById(String id) {
-	     return Optional.ofNullable(courses.get(id));
-	 }
-	
-	 public List<Course> findAll() {
-	     return new ArrayList<>(courses.values());
-	 }
-	
-	 public void delete(String id) {
-	     courses.remove(id);
-	 }
+    public void save(Course course) {
+        Database.getInstance().saveCourse(course);
+    }
+
+    public Optional<Course> findById(String id) {
+        return Optional.ofNullable(Database.getInstance().getCourses().get(id));
+    }
+
+    public List<Course> findAll() {
+        return new ArrayList<>(Database.getInstance().getCourses().values());
+    }
+
+    public void delete(String id) {
+        Database.getInstance().deleteCourse(id);
+    }
 }

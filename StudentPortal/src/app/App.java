@@ -4,13 +4,18 @@ import java.util.*;
 import util.Printer;
 import command.core.*;
 import command.system.LoginCommand;
-import domain.course.Course;
 import domain.user.Session;
 import repository.CourseRepository;
+import repository.UserRepository;
+import repository.Database;
 import config.CommandConfigurator;
 import service.CourseService;
+import service.UserService;
+import service.RegistrationService;
+import service.ResearchService;
 import ui.Menu;
-import repository.Database;
+import bootstrap.DataSeeder;
+import storage.DatabaseStorage;
 
 public class App {
 
@@ -21,11 +26,13 @@ public class App {
         CommandRegistry registry = new CommandRegistry();
         CommandManager commandManager = new CommandManager();
         CourseRepository courseRepository = new CourseRepository();
+        UserRepository userRepository = new UserRepository();
 
-        // Инициализация базы данных
         Database db = Database.getInstance();
-        db.load();
-        db.initTestData();
+        DatabaseStorage.load().ifPresent(db::replaceWith);
+        if (db.isEmpty()) {
+            DataSeeder.bootstrap(db);
+        }
 
         printer.println("\n Database has " + db.getUsers().size() + " users:");
         db.getUsers().values().forEach(u ->
@@ -33,19 +40,23 @@ public class App {
         );
         printer.println(" Courses: " + db.getCourses().size() + "\n");
 
-        courseRepository.save(new Course(1, "Introduction to Networks", "Introductory course for freshmen", 6));
-
         Session session = new Session();
         Menu menu = new Menu(registry, printer, session);
         CourseService courseService = new CourseService(courseRepository);
-        LoginCommand loginCommand = new LoginCommand(db, printer, session);
+        UserService userService = new UserService(userRepository);
+        RegistrationService registrationService = new RegistrationService();
+        ResearchService researchService = new ResearchService();
+        LoginCommand loginCommand = new LoginCommand(userService, printer, session);
 
         CommandConfigurator.configure(
-            session, 
-            registry, 
+            session,
+            registry,
             commandManager,
             menu,
             courseService,
+            userService,
+            registrationService,
+            researchService,
             printer,
             loginCommand
         );
@@ -53,13 +64,26 @@ public class App {
         menu.show();
         while (scanner.hasNextLine()) {
             System.out.print("\n> ");
-            String input = scanner.nextLine().trim().toLowerCase();
+            String rawInput = scanner.nextLine().trim().toLowerCase();
+            String commandKey = rawInput;
+            String commandArgs = "";
 
-            Command cmd = registry.get(input);
+            Command cmd = registry.get(commandKey);
+            if (cmd == null && rawInput.contains(" ")) {
+                int firstSpace = rawInput.indexOf(' ');
+                commandKey = rawInput.substring(0, firstSpace);
+                commandArgs = rawInput.substring(firstSpace + 1).trim();
+                cmd = registry.get(commandKey);
+            }
 
             if (cmd == null) {
                 printer.println(session.getCurrentLanguage().get("message.unknown_command"));
                 continue;
+            }
+
+            if (cmd instanceof CommandWithArgs) {
+                CommandWithArgs argCmd = (CommandWithArgs) cmd;
+                argCmd.setArguments(commandArgs);
             }
 
             commandManager.execute(cmd, scanner);
@@ -67,9 +91,14 @@ public class App {
             if (cmd == loginCommand && session.isAuthenticated()) {
                 registry.clear();
                 CommandConfigurator.configure(
-                    session, registry, commandManager,
+                    session,
+                    registry,
+                    commandManager,
                     menu,
                     courseService,
+                    userService,
+                    registrationService,
+                    researchService,
                     printer,
                     loginCommand
                 );
@@ -77,6 +106,7 @@ public class App {
             }
         }
 
+        DatabaseStorage.save(db);
         printer.println("Input closed. Exiting.");
         scanner.close();
     }
