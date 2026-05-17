@@ -37,7 +37,7 @@ public class App {
         courseRepository.save(new Course(1, "Introduction to Networks", "Introductory course for freshmen", 6));
 
         Session session = new Session();
-        Menu menu = new Menu(registry, printer);
+        Menu menu = new Menu(registry, printer, session);
         CourseService courseService = new CourseService(courseRepository);
         LoginCommand loginCommand = new LoginCommand(db, printer, session);
 
@@ -50,14 +50,14 @@ public class App {
         );
 
         menu.show();
-        while (true) {
+        while (scanner.hasNextLine()) {
             System.out.print("\n> ");
             String input = scanner.nextLine().trim().toLowerCase();
 
             Command cmd = registry.get(input);
 
             if (cmd == null) {
-                printer.println(" Unknown command. Type 'help' for available commands.");
+                printer.println(session.getCurrentLanguage().get("message.unknown_command"));
                 continue;
             }
 
@@ -75,5 +75,8 @@ public class App {
                 menu.show();
             }
         }
+
+        printer.println("Input closed. Exiting.");
+        scanner.close();
     }
 }

@@ -28,7 +28,8 @@ public class CommandConfigurator {
         
         registry.register(new UndoCommand(manager, printer));
         registry.register(new RedoCommand(manager, printer));
-        registry.register(new ShowMenuCommand(menu));
+        registry.register(new ShowMenuCommand(menu, session));
+        registry.register(new ChangeLanguageCommand(session, printer));
         registry.register(loginCommand);
 
         if (session.isAuthenticated()) {

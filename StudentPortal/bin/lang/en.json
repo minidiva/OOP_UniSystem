@@ -1,0 +1,11 @@
+{
+  "command.language.description": "Switch application language",
+  "language.prompt": "Language settings",
+  "language.choose": "Enter language code:",
+  "language.changed": "Language changed successfully.",
+  "language.invalid": "Unsupported language code. Supported codes: en, ru.",
+  "menu.header": "=== Available commands ===",
+  "command.login.description": "Login to account",
+  "message.unknown_command": "Unknown command. Type 'help' for available commands.",
+  "command.menu.show": "Show available commands"
+}

@@ -26,6 +26,10 @@ public class RegisterCourseCommand implements Command {
         courseService.getAvailableFor(student).forEach(printer::println);
         
         printer.println("Enter course ID: ");
+        if (!scanner.hasNextLine()) {
+            printer.println("Input closed.");
+            return;
+        }
         String courseId = scanner.nextLine();
         
         var courseOpt = courseService.getById(courseId);

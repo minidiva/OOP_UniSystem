@@ -1,0 +1,12 @@
+{
+  "command.language.description": "Переключить язык приложения",
+  "language.prompt": "Настройки языка",
+  "language.choose": "Введите код языка:",
+  "language.changed": "Язык успешно изменён.",
+  "language.invalid": "Неподдерживаемый код языка. Поддерживаемые: en, ru.",
+  "menu.header": "=== Доступные команды ===",
+  "command.login.description": "Войти в аккаунт",
+  "message.unknown_command": "Неизвестная команда. Введите 'help' для списка команд.",
+  "command.menu.show": "Посмотреть доступные команды"
+
+}

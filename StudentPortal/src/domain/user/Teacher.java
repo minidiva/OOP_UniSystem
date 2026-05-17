@@ -20,7 +20,7 @@ public class Teacher extends Employee {
         this.title = title;
         this.teachingCourses = new ArrayList<>();
     }
-    
+
     // геттеры и сеттеры...
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }

@@ -55,7 +55,7 @@ public class Student extends User {
             enrolledCourses.add(course);
             credits += course.getCredits();
             System.out.println("  Registered for: " + course.getTitle());
-            System.out.println("   Current credits: " + credits + "/21");
+            System.out.println("  Current credits: " + credits + "/21");
         }
     }
     

@@ -33,11 +33,14 @@ public class Mark implements Serializable {
         if(total >= 54.5 && total < 59.5) return "D+";
         if(total >= 49.5 && total < 54.5) return "D";
         if (total < 49.5) return "F";
+        else {
+            return "Invalid";
+        }
     }
     
     public double getGpaValue() {
         double total = calculateTotal();
-         if (total >= 94.5) return 4.00;
+        if (total >= 94.5) return 4.00;
         if(total >=89.5 && total < 94.5) return 3.67;
         if (total >= 84.5 && total < 89.5) return 3.33;
         if(total >= 79.5 && total < 84.5) return 3.00;
@@ -48,6 +51,9 @@ public class Mark implements Serializable {
         if(total >= 54.5 && total < 59.5) return 1.33;
         if(total >= 49.5 && total < 54.5) return 1.00;
         if (total < 49.5) return 0.00;
+        else {
+            return 0.0;
+        }
     }
     
     // Getters

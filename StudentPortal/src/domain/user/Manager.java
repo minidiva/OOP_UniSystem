@@ -3,7 +3,7 @@ package domain.user;
 import java.time.LocalDate;
 
 public class Manager extends Employee {
-    private String managerType;  // OR_MANAGER, DEPARTMENT_MANAGER, DEAN
+    private String managerType;
     
     public Manager() {
         this.role = Role.MANAGER;

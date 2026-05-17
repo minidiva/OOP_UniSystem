@@ -20,13 +20,23 @@ public class LoginCommand implements Command {
     }
     
     public String name() { return "login"; }
-    public String description() { return "Вход в систему"; }
+    public String description() {
+        return session.getCurrentLanguage().get("command.login.description");
+    }
     
     public void execute(Scanner scanner) {
         printer.println("\n=== LOGIN ===");
         printer.println("Email: ");
+        if (!scanner.hasNextLine()) {
+            printer.println("Input closed.");
+            return;
+        }
         String email = scanner.nextLine();
         printer.println("Password: ");
+        if (!scanner.hasNextLine()) {
+            printer.println("Input closed.");
+            return;
+        }
         String password = scanner.nextLine();
         
         currentUser = db.getUsers().values().stream()

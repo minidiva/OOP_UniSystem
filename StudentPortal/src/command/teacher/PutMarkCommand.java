@@ -27,6 +27,10 @@ public class PutMarkCommand implements Command {
     public void execute(Scanner scanner) {
         printer.println("\n=== PUT MARK ===");
         printer.println("Student email: ");
+        if (!scanner.hasNextLine()) {
+            printer.println("Input closed.");
+            return;
+        }
         String studentEmail = scanner.nextLine();
         
         Student student = (Student) db.getUsers().values().stream()
@@ -40,6 +44,10 @@ public class PutMarkCommand implements Command {
         }
         
         printer.println("Course ID: ");
+        if (!scanner.hasNextLine()) {
+            printer.println("Input closed.");
+            return;
+        }
         String courseId = scanner.nextLine();
         var courseOpt = courseService.getById(courseId);
         
@@ -48,13 +56,29 @@ public class PutMarkCommand implements Command {
             return;
         }
         
-        printer.println("First attestation (0-30): ");
-        double first = Double.parseDouble(scanner.nextLine());
-        printer.println("Second attestation (0-30): ");
-        double second = Double.parseDouble(scanner.nextLine());
-        printer.println("Final exam (0-40): ");
-        double finalExam = Double.parseDouble(scanner.nextLine());
+        Double first = readDouble(scanner, "First attestation (0-30): ");
+        if (first == null) return;
+        Double second = readDouble(scanner, "Second attestation (0-30): ");
+        if (second == null) return;
+        Double finalExam = readDouble(scanner, "Final exam (0-40): ");
+        if (finalExam == null) return;
         
-        teacher.putMark(student, courseOpt.get(), first, second, finalExam);
+        // teacher.putMark(student, courseOpt.get(), first, second, finalExam);
+    }
+
+    private Double readDouble(Scanner scanner, String prompt) {
+        printer.println(prompt);
+        if (!scanner.hasNextLine()) {
+            printer.println("Input closed.");
+            return null;
+        }
+
+        String raw = scanner.nextLine().trim();
+        try {
+            return Double.parseDouble(raw);
+        } catch (NumberFormatException e) {
+            printer.println(" Invalid number format: " + raw);
+            return null;
+        }
     }
 }
