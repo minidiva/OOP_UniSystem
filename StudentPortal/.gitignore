@@ -1,0 +1,4 @@
+bin/
+*.class
+*.ser
+database.ser
