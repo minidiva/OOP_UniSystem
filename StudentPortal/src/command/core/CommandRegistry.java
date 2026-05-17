@@ -1,4 +1,5 @@
 package command.core;
+
 import java.util.*;
 
 public class CommandRegistry {
@@ -21,3 +22,4 @@ public class CommandRegistry {
         commands.clear();
     }
 }
+

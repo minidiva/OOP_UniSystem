@@ -22,14 +22,13 @@ public class App {
         CommandManager manager = new CommandManager();
         CourseRepository courseRepository = new CourseRepository();
 
-
         // Инициализация базы данных
         Database db = Database.getInstance();
-        db.load();              
-        db.initTestData();      
-        
+        db.load();
+        db.initTestData();
+
         printer.println("\n Database has " + db.getUsers().size() + " users:");
-        db.getUsers().values().forEach(u -> 
+        db.getUsers().values().forEach(u ->
             printer.println("   - " + u.getEmail() + " (password: " + u.getPassword() + ")")
         );
         printer.println(" Courses: " + db.getCourses().size() + "\n");
