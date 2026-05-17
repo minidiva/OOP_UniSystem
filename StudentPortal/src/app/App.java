@@ -19,7 +19,7 @@ public class App {
         Printer printer = new Printer();
 
         CommandRegistry registry = new CommandRegistry();
-        CommandManager manager = new CommandManager();
+        CommandManager commandManager = new CommandManager();
         CourseRepository courseRepository = new CourseRepository();
 
         // Инициализация базы данных
@@ -41,7 +41,9 @@ public class App {
         LoginCommand loginCommand = new LoginCommand(db, printer, session);
 
         CommandConfigurator.configure(
-            session, registry, manager,
+            session, 
+            registry, 
+            commandManager,
             menu,
             courseService,
             printer,
@@ -60,12 +62,12 @@ public class App {
                 continue;
             }
 
-            manager.execute(cmd, scanner);
+            commandManager.execute(cmd, scanner);
 
             if (cmd == loginCommand && session.isAuthenticated()) {
                 registry.clear();
                 CommandConfigurator.configure(
-                    session, registry, manager,
+                    session, registry, commandManager,
                     menu,
                     courseService,
                     printer,
