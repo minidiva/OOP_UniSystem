@@ -2,14 +2,17 @@ package domain.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import domain.course.Course;
+import domain.user.Title;
 
 public class Teacher extends User {
-    private String title;  // PROFESSOR, SENIOR_LECTURER, LECTURER, TUTOR
+    private Title title;
     private double salary;
     private LocalDate hireDate;
     private List<Course> teachingCourses;
+    private final List<Integer> ratings = new ArrayList<>();
     
     public Teacher() {
         this.role = Role.TEACHER;
@@ -17,7 +20,7 @@ public class Teacher extends User {
     }
     
     public Teacher(int id, String firstName, String lastName, String email, String password, 
-                   String title, double salary) {
+                   Title title, double salary) {
         super(id, firstName, lastName, email, password, Role.TEACHER);
         this.title = title;
         this.salary = salary;
@@ -47,11 +50,24 @@ public class Teacher extends User {
         System.out.println(" Mark put for " + student.getFullName() + " in " + course.getTitle());
         System.out.println("   Total: " + mark.calculateTotal() + " (" + mark.getLetterGrade() + ")");
     }
+
+    public void addRating(int rating) {
+        if (rating >= 1 && rating <= 5) {
+            ratings.add(rating);
+        }
+    }
+
+    public double getAverageRating() {
+        if (ratings.isEmpty()) {
+            return 0.0;
+        }
+        return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
+    }
     
     // Геттеры и сеттеры
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-    
+    public Title getTitle() { return title; }
+    public void setTitle(Title title) { this.title = title; }
+
     public double getSalary() { return salary; }
     public void setSalary(double salary) { this.salary = salary; }
     
