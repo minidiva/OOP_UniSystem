@@ -1,9 +1,9 @@
 package command.student;
-import util.Printer;
 
+import util.Printer;
 import java.util.*;
 import service.CourseService;
-import domain.user.*;
+import domain.user.Student;
 import command.core.Command;
 
 public class ViewCoursesCommand implements Command {
@@ -18,10 +18,21 @@ public class ViewCoursesCommand implements Command {
         this.printer = printer;
     }
 
+    @Override
     public String name() { return "courses"; }
-    public String description() { return "Просмотреть курсы"; }
+    
+    @Override
+    public String description() { 
+        return student != null ? "Просмотреть доступные курсы" : "Просмотреть все курсы"; 
+    }
 
+    @Override
     public void execute(Scanner scanner) {
-        printer.printList(courseService.getAvailableFor(student));
+        printer.println("\n=== COURSES ===");
+        if (student != null) {
+            printer.printList(courseService.getAvailableFor(student));
+        } else {
+            printer.printList(courseService.getAllCourses());
+        }
     }
 }

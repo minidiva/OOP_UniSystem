@@ -1,4 +1,5 @@
 package command.core;
+
 import java.util.*;
 
 public class CommandRegistry {
@@ -15,5 +16,10 @@ public class CommandRegistry {
 
     public Collection<Command> all() {
         return commands.values();
+    }
+    
+    //  очищает все команды
+    public void clear() {
+        commands.clear();
     }
 }

@@ -3,14 +3,11 @@ package app;
 import java.util.*;
 import util.Printer;
 import command.core.*;
-import domain.course.Course;
-import domain.user.Student;
-import domain.user.User;
 import repository.CourseRepository;
 import config.CommandConfigurator;
 import service.CourseService;
 import ui.Menu;
-import repository.Database;
+import repository.Database;     
 
 public class App {
 
@@ -20,34 +17,21 @@ public class App {
 
         CommandRegistry registry = new CommandRegistry();
         CommandManager manager = new CommandManager();
-        CourseRepository courseRepository = new CourseRepository();
-
-
-        // Инициализация базы данных
-        Database db = Database.getInstance();
-        db.load();              
-        db.initTestData();      
         
-        printer.println("\n Database has " + db.getUsers().size() + " users:");
-        db.getUsers().values().forEach(u -> 
-            printer.println("   - " + u.getEmail() + " (password: " + u.getPassword() + ")")
-        );
-        printer.println(" Courses: " + db.getCourses().size() + "\n");
-
-        courseRepository.save(new Course(1, "Introduction to Networks", "Introductory course for freshmen", 6));
-
-
-        User user = new Student();
+        // Инициализация базы данных
+        Database db = Database.getInstance();   
+        db.load();
+        db.initTestData();
+        
+        CourseRepository courseRepository = new CourseRepository();
+        CourseService courseService = new CourseService(courseRepository);
+        
         Menu menu = new Menu(registry, printer);
-
-        CommandConfigurator.configure(
-            user, registry, manager,
-            menu,
-            new CourseService(courseRepository),
-            printer
-        );
-
+        
+        CommandConfigurator.configure(null, registry, manager, menu, courseService, printer);
+        
         menu.show();
+        
         while (true) {
             System.out.print("\n> ");
             String input = scanner.nextLine().trim().toLowerCase();
