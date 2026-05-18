@@ -48,4 +48,8 @@ public class ResearchProfile implements Researcher, Serializable {
         }
         return h;
     }
+    @Override
+    public ResearchProfile getProfile() {
+        return this;
+    }
 }
