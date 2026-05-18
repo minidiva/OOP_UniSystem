@@ -20,4 +20,5 @@ public class CourseRepository {
     public void delete(String id) {
         Database.getInstance().deleteCourse(id);
     }
+    
 }

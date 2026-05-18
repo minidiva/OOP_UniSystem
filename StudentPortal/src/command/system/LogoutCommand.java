@@ -43,16 +43,16 @@ public class LogoutCommand implements Command {
     public void execute(Scanner scanner) {
         printer.println("\n Logging out...");
         
-  
         session.logout();
         
         registry.clear();
         
         Database db = Database.getInstance();
+        
         registry.register(new ShowMenuCommand(menu, session));
         registry.register(new UndoCommand(manager, printer));
         registry.register(new RedoCommand(manager, printer));
-        registry.register(new LoginCommand(db, printer, registry, manager, menu, courseService));
+        registry.register(new LoginCommand(db, printer, registry, manager, menu, courseService, session, null, null, null));
         
         menu.show();
         printer.println(" You have been logged out. Type 'login' to sign in again.");

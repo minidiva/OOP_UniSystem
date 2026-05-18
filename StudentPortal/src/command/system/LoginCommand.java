@@ -9,6 +9,8 @@ import domain.user.User;
 import domain.user.Session;
 import service.CourseService;
 import service.UserService;
+import service.RegistrationService;
+import service.ResearchService;
 import ui.Menu;
 import util.Printer;
 import config.CommandConfigurator;
@@ -22,32 +24,10 @@ public class LoginCommand implements Command {
     private final CourseService courseService;
     private final Session session;
     private final UserService userService;
+    private final RegistrationService registrationService;
+    private final ResearchService researchService;
     private User currentUser;
     
-    public LoginCommand(Database db, Printer printer, CommandRegistry registry, 
-                        CommandManager manager, Menu menu, CourseService courseService) {
-        this.db = db;
-        this.printer = printer;
-        this.registry = registry;
-        this.manager = manager;
-        this.menu = menu;
-        this.courseService = courseService;
-        this.session = null;
-        this.userService = null;
-    }
-    
-    public LoginCommand(Database db, Printer printer, Session session) {
-        this.db = db;
-        this.printer = printer;
-        this.session = session;
-        this.registry = null;
-        this.manager = null;
-        this.menu = null;
-        this.courseService = null;
-        this.userService = null;
-    }
-    
-    // Конструктор 3: для использования в App (с UserService)
     public LoginCommand(UserService userService, Printer printer, Session session) {
         this.db = Database.getInstance();
         this.printer = printer;
@@ -57,6 +37,24 @@ public class LoginCommand implements Command {
         this.manager = null;
         this.menu = null;
         this.courseService = null;
+        this.registrationService = null;
+        this.researchService = null;
+    }
+    
+    public LoginCommand(Database db, Printer printer, CommandRegistry registry, 
+                        CommandManager manager, Menu menu, CourseService courseService,
+                        Session session, UserService userService, 
+                        RegistrationService registrationService, ResearchService researchService) {
+        this.db = db;
+        this.printer = printer;
+        this.registry = registry;
+        this.manager = manager;
+        this.menu = menu;
+        this.courseService = courseService;
+        this.session = session;
+        this.userService = userService;
+        this.registrationService = registrationService;
+        this.researchService = researchService;
     }
     
     @Override
@@ -79,7 +77,6 @@ public class LoginCommand implements Command {
         printer.println("Password: ");
         String password = scanner.nextLine();
         
-        // Поиск пользователя в базе
         currentUser = findUserByEmailAndPassword(email, password);
         
         if (currentUser != null) {
@@ -90,16 +87,21 @@ public class LoginCommand implements Command {
                 session.setCurrentUser(currentUser);
             }
             
-            // Обновляем команды после логина
-            if (registry != null && manager != null && menu != null && courseService != null) {
+            if (registry != null && manager != null && menu != null && courseService != null && session != null) {
                 registry.clear();
                 CommandConfigurator.configure(session, registry, manager, menu, courseService, 
-                                             null, null, null, printer, this);
+                                             userService, registrationService, researchService, printer, this);
                 menu.show();
+            } else {
+               
+                printer.println("\n=== Available commands ===");
+                printer.println("help - Show available commands");
+                printer.println("logout - Logout");
+                printer.println("users - Manage users");
+                printer.println("logs - View logs");
             }
         } else {
             printer.println(" Invalid email or password");
-            printer.println("   Hint: Use test@email.com / 1234567");
         }
     }
     

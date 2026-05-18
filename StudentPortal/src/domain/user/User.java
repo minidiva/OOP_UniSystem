@@ -19,7 +19,7 @@ public class User implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.role = role; 
     }
     
     public boolean login(String email, String password) {

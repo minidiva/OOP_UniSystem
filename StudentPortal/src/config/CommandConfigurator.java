@@ -6,6 +6,8 @@ import command.core.CommandManager;
 import command.admin.UserCommand;
 import command.course.CourseCommand;
 import command.manager.ApproveRegistrationCommand;
+import command.manager.CreateCourseCommand;
+import command.manager.AssignTeacherCommand;
 import command.research.ResearchCommand;
 import command.student.RateTeacherCommand;
 import command.student.ViewCoursesCommand;
@@ -49,9 +51,14 @@ public class CommandConfigurator {
             Printer printer,
             LoginCommand loginCommand
     ) {
+        if (session == null) {
+            System.out.println("️ Session is null");
+            return;
+        }
+        
         Database db = Database.getInstance();
         
-        // ===== ОБЩИЕ КОМАНДЫ ДЛЯ ВСЕХ 
+        // ===== ОБЩИЕ КОМАНДЫ (всегда доступны) =====
         registry.register(new ShowMenuCommand(menu, session));
         registry.register(new ChangeLanguageCommand(session, printer));
         registry.register(new UndoCommand(cmdManager, printer));
@@ -59,16 +66,17 @@ public class CommandConfigurator {
         registry.register(loginCommand);
         registry.register(new LogoutCommand(registry, cmdManager, menu, cs, printer, session));
 
+        
         if (!session.isAuthenticated()) {
             return;
         }
 
         User user = session.getCurrentUser();
         
-        // ===== КОМАНДЫ ДЛЯ ВСЕХ ЗАЛОГИНЕННЫХ =====
+        
         registry.register(new ResearchCommand(researchService, printer));
 
-        // ===== КОМАНДЫ ДЛЯ СТУДЕНТА =====
+        // ===== СТУДЕНТ =====
         if (user instanceof Student student) {
             registry.register(new ViewCoursesCommand(cs, student, printer));
             registry.register(new RegisterCourseCommand(student, cs, registrationService, userService, printer));
@@ -76,21 +84,24 @@ public class CommandConfigurator {
             registry.register(new ViewTranscriptCommand(student, printer));
             registry.register(new RateTeacherCommand(student, userService, printer));
         }
-
-        // ===== КОМАНДЫ ДЛЯ ПРЕПОДАВАТЕЛЯ =====
-        if (user instanceof Teacher teacher) {
+        
+        // ===== ПРЕПОДАВАТЕЛЬ =====
+        else if (user instanceof Teacher teacher) {
+            registry.register(new ViewCoursesCommand(cs, null, printer));
             registry.register(new PutMarkCommand(teacher, cs, userService, printer));
             registry.register(new RegisterForCourseCommand(teacher, cs, registrationService, printer));
         }
-
-        // ===== КОМАНДЫ ДЛЯ МЕНЕДЖЕРА =====
-        if (user instanceof Manager manager) {
+        
+        // ===== МЕНЕДЖЕР =====
+        else if (user instanceof Manager manager) {
             registry.register(new CourseCommand(session, cs, printer));
             registry.register(new ApproveRegistrationCommand(manager, registrationService, printer));
+            registry.register(new CreateCourseCommand(cs, printer));
+            registry.register(new AssignTeacherCommand(manager, cs, db, printer));
         }
-
-        // ===== КОМАНДЫ ДЛЯ АДМИНИСТРАТОРА =====
-        if (user instanceof Admin admin) {
+        
+        // ===== АДМИНИСТРАТОР =====
+        else if (user instanceof Admin admin) {
             registry.register(new UserCommand(admin, userService, printer));
             registry.register(new ViewLogsCommand(LoggingService.getInstance(), printer));
         }
