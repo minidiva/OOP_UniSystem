@@ -3,7 +3,6 @@ package service;
 import domain.research.*;
 import domain.user.User;
 import repository.Database;
-import java.time.Year;
 import java.util.*;
 import java.util.stream.Collectors;
 import domain.research.exceptions.NotAResearcherException;
@@ -35,6 +34,7 @@ public class ResearchService {
             decorator.getProfile().addPaper(paper);
             database.saveResearchProfile(decorator.getProfile());
             loggingService.log("Paper published by " + researcher.getDisplayName() + ": " + paper.getTitle());
+            ResearchRegistry.getInstance().notifyPaperPublished(decorator.getProfile(), paper);
         }
     }
 

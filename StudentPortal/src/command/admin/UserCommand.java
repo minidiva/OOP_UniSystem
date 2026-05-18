@@ -4,7 +4,6 @@ import java.util.Scanner;
 import command.core.Command;
 import command.core.CommandWithArgs;
 import domain.user.Admin;
-import domain.user.Role;
 import domain.user.Student;
 import domain.user.Teacher;
 import domain.user.Manager;

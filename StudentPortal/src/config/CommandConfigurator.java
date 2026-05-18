@@ -16,9 +16,7 @@ import command.teacher.PutMarkCommand;
 import command.teacher.RegisterForCourseCommand;
 import command.system.ChangeLanguageCommand;
 import command.system.LoginCommand;
-import command.system.RedoCommand;
 import command.system.ShowMenuCommand;
-import command.system.UndoCommand;
 import command.system.ViewLogsCommand;
 import domain.user.Session;
 import domain.user.User;
@@ -26,6 +24,7 @@ import domain.user.Student;
 import domain.user.Teacher;
 import domain.user.Manager;
 import domain.user.Admin;
+import repository.Database;
 import service.CourseService;
 import service.RegistrationService;
 import service.ResearchService;
@@ -54,7 +53,7 @@ public class CommandConfigurator {
         if (session.isAuthenticated()) {
             User user = session.getCurrentUser();
 
-            registry.register(new ResearchCommand(researchService, printer));
+            registry.register(new ResearchCommand(researchService, printer, Database.getInstance(), user));
 
             if (user instanceof Student) {
                 Student student = (Student) user;
