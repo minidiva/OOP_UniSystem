@@ -51,13 +51,13 @@ public class CommandConfigurator {
     ) {
         Database db = Database.getInstance();
         
-        // ===== ОБЩИЕ КОМАНДЫ ДЛЯ ВСЕХ  =====
+        // ===== ОБЩИЕ КОМАНДЫ ДЛЯ ВСЕХ 
         registry.register(new ShowMenuCommand(menu, session));
         registry.register(new ChangeLanguageCommand(session, printer));
         registry.register(new UndoCommand(cmdManager, printer));
         registry.register(new RedoCommand(cmdManager, printer));
         registry.register(loginCommand);
-        registry.register(new LogoutCommand(registry, cmdManager, menu, printer, session));
+        registry.register(new LogoutCommand(registry, cmdManager, menu, cs, printer, session));
 
         if (!session.isAuthenticated()) {
             return;
