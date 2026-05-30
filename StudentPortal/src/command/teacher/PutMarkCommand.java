@@ -12,13 +12,11 @@ import util.Printer;
 
 public class PutMarkCommand implements Command {
     private final Teacher teacher;
-    private final CourseService courseService;
     private final UserService userService;
     private final Printer printer;
 
     public PutMarkCommand(Teacher teacher, CourseService courseService, UserService userService, Printer printer) {
         this.teacher = teacher;
-        this.courseService = courseService;
         this.userService = userService;
         this.printer = printer;
     }

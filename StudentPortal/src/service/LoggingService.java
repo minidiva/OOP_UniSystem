@@ -1,6 +1,5 @@
 package service;
 
-import repository.Database;
 import service.event.EventListener;
 import service.event.EventPublisher;
 import java.util.ArrayList;

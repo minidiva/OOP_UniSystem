@@ -8,12 +8,10 @@ import service.UserService;
 import util.Printer;
 
 public class RateTeacherCommand implements Command {
-    private final Student student;
     private final UserService userService;
     private final Printer printer;
 
     public RateTeacherCommand(Student student, UserService userService, Printer printer) {
-        this.student = student;
         this.userService = userService;
         this.printer = printer;
     }

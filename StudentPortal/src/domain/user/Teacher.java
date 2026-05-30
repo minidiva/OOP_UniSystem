@@ -2,10 +2,8 @@ package domain.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
 import java.util.List;
 import domain.course.Course;
-import domain.user.Title;
 
 public class Teacher extends User {
     private Title title;
@@ -28,10 +26,8 @@ public class Teacher extends User {
         this.teachingCourses = new ArrayList<>();
     }
     
-    // НОВЫЙ МЕТОД — выставление оценки
     public void putMark(Student student, Course course, double firstAttestation, 
                         double secondAttestation, double finalExam) {
-        // Проверка границ
         if (firstAttestation < 0 || firstAttestation > 30) {
             System.out.println(" First attestation must be between 0 and 30");
             return;
@@ -64,7 +60,6 @@ public class Teacher extends User {
         return ratings.stream().mapToInt(Integer::intValue).average().orElse(0.0);
     }
     
-    // Геттеры и сеттеры
     public Title getTitle() { return title; }
     public void setTitle(Title title) { this.title = title; }
 
