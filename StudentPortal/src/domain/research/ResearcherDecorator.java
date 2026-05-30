@@ -47,4 +47,5 @@ public class ResearcherDecorator implements Researcher {
     public String toString() {
         return String.format("%s (Researcher) — H-index %.1f", getDisplayName(), getHIndex());
     }
+    
 }

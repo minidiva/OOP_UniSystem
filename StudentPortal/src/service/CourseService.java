@@ -14,52 +14,9 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
     
-    public void createCourse(Course course) {
-        courseRepository.save(course);
-    }
-    
-    public Course createCourse(int id, String title, String description, int credits) {
-        Course course = new Course(id, title, description, credits);
-        createCourse(course);
-        return course;
-    }
-
-    public int getNextCourseId() {
-        return courseRepository.findAll().stream()
-            .mapToInt(Course::getId)
-            .filter(i -> i > 0)
-            .sorted()
-            .reduce(1, (nextId, existingId) -> nextId == existingId ? nextId + 1 : nextId);
-    }
-
-    public Course createCourse(String title, String description, int credits) {
-        int id = getNextCourseId();
-        return createCourse(id, title, description, credits);
-    }
-
-    public Optional<Course> updateCourse(int id, String title, String description, int credits) {
-        var existing = getById(String.valueOf(id));
-        if (existing.isEmpty()) {
-            return Optional.empty();
-        }
-        Course course = new Course(id, title, description, credits);
-        createCourse(course);
-        return Optional.of(course);
-    }
-
-    public boolean deleteCourse(int id) {
-        var existing = getById(String.valueOf(id));
-        if (existing.isEmpty()) {
-            return false;
-        }
-        courseRepository.delete(String.valueOf(id));
-        return true;
-    }
-    
     public List<Course> getAvailableFor(Student student) {
         return courseRepository.findAll().stream()
              .filter(c -> c.isAvailableFor(student))
-             .filter(c -> !student.getEnrolledCourses().contains(c))
              .collect(Collectors.toList());
     }
     
@@ -69,5 +26,53 @@ public class CourseService {
     
     public Optional<Course> getById(String id) {
         return courseRepository.findById(id);
+    }
+    
+    public void addCourse(Course course) {
+        if (course != null) {
+            courseRepository.save(course);
+            System.out.println(" Course added: " + course.getTitle());
+        }
+    }
+    
+
+    
+    public Course createCourse(String title, String description, int credits) {
+        int newId = generateNewId();
+        Course course = new Course(newId, title, description, credits);
+        courseRepository.save(course);
+        System.out.println("Course created: " + title);
+        return course;
+    }
+    
+    public Optional<Course> updateCourse(int id, String title, String description, int credits) {
+        Optional<Course> existing = courseRepository.findById(String.valueOf(id));
+        if (existing.isPresent()) {
+            Course course = existing.get();
+            course.setTitle(title);
+            course.setDescription(description);
+            course.setCredits(credits);
+            courseRepository.save(course);
+            return Optional.of(course);
+        }
+        return Optional.empty();
+    }
+    
+    public boolean deleteCourse(int id) {
+        Optional<Course> existing = courseRepository.findById(String.valueOf(id));
+        if (existing.isPresent()) {
+            courseRepository.delete(String.valueOf(id));
+            System.out.println(" Course deleted: " + existing.get().getTitle());
+            return true;
+        }
+        System.out.println(" Course not found with ID: " + id);
+        return false;
+    }
+    
+    private int generateNewId() {
+        return courseRepository.findAll().stream()
+            .mapToInt(Course::getId)
+            .max()
+            .orElse(0) + 1;
     }
 }

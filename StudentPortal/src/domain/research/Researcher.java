@@ -12,4 +12,5 @@ public interface Researcher {
     double getHIndex();
     List<ResearchPaper> getPapers();
     void printPapers(Comparator<ResearchPaper> comparator);
+    ResearchProfile getProfile();
 }

@@ -7,6 +7,11 @@ public class CommandRegistry {
     private final Map<String, Command> commands = new LinkedHashMap<>();
 
     public void register(Command command) {
+    
+        if (command == null) {
+            System.out.println("️ Warning: Tried to register null command, skipping...");
+            return;
+        }
         commands.put(command.name(), command);
     }
 
@@ -22,4 +27,3 @@ public class CommandRegistry {
         commands.clear();
     }
 }
-

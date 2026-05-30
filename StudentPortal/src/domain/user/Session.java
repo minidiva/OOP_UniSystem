@@ -26,4 +26,9 @@ public class Session {
     public boolean isAuthenticated() {
         return currentUser != null;
     }
+    
+    // ДОБАВЬ ЭТОТ МЕТОД
+    public void logout() {
+        this.currentUser = null;
+    }
 }
